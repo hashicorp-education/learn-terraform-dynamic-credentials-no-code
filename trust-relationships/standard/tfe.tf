@@ -11,7 +11,7 @@ resource "tfe_workspace" "trust_workspace" {
 }
 
 resource "tfe_variable" "enable_aws_provider_auth" {
-  workspace_id = tfe_workspace.my_workspace.id
+  workspace_id = tfe_workspace.trust_workspace.id
 
   key      = "TFC_AWS_PROVIDER_AUTH"
   value    = "true"
@@ -21,7 +21,7 @@ resource "tfe_variable" "enable_aws_provider_auth" {
 }
 
 resource "tfe_variable" "tfc_aws_role_arn" {
-  workspace_id = tfe_workspace.my_workspace.id
+  workspace_id = tfe_workspace.trust_workspace.id
 
   key      = "TFC_AWS_RUN_ROLE_ARN"
   value    = aws_iam_role.tfc_role.arn

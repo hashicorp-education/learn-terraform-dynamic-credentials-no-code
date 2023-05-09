@@ -57,6 +57,14 @@ resource "tfe_project_variable_set" "aws_credentials" {
   project_id = tfe_project.trust_relationships.id
 }
 
+resource "tfe_variable" "organization_name" {
+  key             = "tfc_organization_name"
+  value           = var.tfc_organization_name
+  category        = "terraform"
+  description     = "organization name"
+  variable_set_id = tfe_variable_set.aws_credentials.id
+}
+
 resource "tfe_variable" "aws_access_key_id" {
   key             = "AWS_ACCESS_KEY_ID"
   value           = aws_iam_access_key.trust_relationships.id

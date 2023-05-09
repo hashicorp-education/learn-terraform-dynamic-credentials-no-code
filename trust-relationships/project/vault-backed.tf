@@ -120,7 +120,7 @@ resource "tfe_variable" "tfc_aws_mount_path" {
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
-resource "tfe_variable" "tfc_vault_toekn" {
+resource "tfe_variable" "tfc_vault_token" {
   key      = "VAULT_TOKEN"
   value    = var.vault_token
   category = "env"
