@@ -18,10 +18,16 @@ variable "tfc_organization_name" {
   description = "The name of your Terraform Cloud organization"
 }
 
-variable "tfc_project_name" {
+variable "tfc_trust_project_name" {
   type        = string
   default     = "Trust Relationships"
   description = "The name of the trust relationships project."
+}
+
+variable "tfc_trust_team_name" {
+  type        = string
+  default     = "Trust Relationships"
+  description = "The name of the trust relationships team."
 }
 
 variable "vault_url" {

@@ -6,26 +6,8 @@ resource "aws_iam_access_key" "trust_relationships" {
   user = aws_iam_user.trust_relationships.name
 }
 
-resource "aws_iam_role" "trust_relationships" {
-  assume_role_policy = jsonencode(
-    {
-      Statement = [
-        {
-          Action    = "sts:AssumeRole"
-          Condition = {}
-          Effect    = "Allow"
-          Principal = {
-            AWS = aws_iam_user.trust_relationships.arn
-          }
-        },
-      ]
-      Version = "2012-10-17"
-    }
-  )
-}
-
-resource "aws_iam_policy" "trust_relationships" {
-  description = "TFC run policy"
+resource "aws_iam_user_policy" "trust_relationships" {
+  user = aws_iam_user.trust_relationships.name
 
   policy = jsonencode({
     Statement = [
@@ -41,11 +23,6 @@ resource "aws_iam_policy" "trust_relationships" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "tfc_policy_attachment" {
-  role       = aws_iam_role.trust_relationships.name
-  policy_arn = aws_iam_policy.trust_relationships.arn
-}
-
 resource "tfe_variable_set" "aws_credentials" {
   name         = "AWS Credentials for trust relationships"
   description  = "AWS secret key and secret key ID to configure trust relationships."
@@ -55,14 +32,6 @@ resource "tfe_variable_set" "aws_credentials" {
 resource "tfe_project_variable_set" "aws_credentials" {
   variable_set_id = tfe_variable_set.aws_credentials.id
   project_id = tfe_project.trust_relationships.id
-}
-
-resource "tfe_variable" "organization_name" {
-  key             = "tfc_organization_name"
-  value           = var.tfc_organization_name
-  category        = "terraform"
-  description     = "organization name"
-  variable_set_id = tfe_variable_set.aws_credentials.id
 }
 
 resource "tfe_variable" "aws_access_key_id" {

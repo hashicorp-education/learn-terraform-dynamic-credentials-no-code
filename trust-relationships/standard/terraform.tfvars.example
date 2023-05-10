@@ -1,3 +1,2 @@
-tfc_organization_name = "hashicorp-training"
-tfc_workspace_name    = "trust-for-workspace-vanda"
-tfc_project_name      = "Trust Relationships"
+tfc_organization_name = "<YOUR_ORG>"
+tfc_workspace_name    = "<TARGET_WORKSPACE>"

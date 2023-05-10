@@ -23,7 +23,7 @@ variable "tfc_organization_name" {
 
 variable "tfc_project_name" {
   type        = string
-  default     = "*"
+  default     = "Default Project"
   description = "The project under which a workspace will be created"
 }
 
