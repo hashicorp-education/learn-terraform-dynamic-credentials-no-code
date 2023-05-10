@@ -11,6 +11,7 @@ resource "tfe_workspace" "trusted_workspace" {
   working_directory = "/infra"
   vcs_repo {
     identifier = "robin-norwood/learn-terraform-dynamic-credentials-workshop"
+    oauth_token_id = "ot-TxSTX4vykTCHGeXD"
   }
 }
 
