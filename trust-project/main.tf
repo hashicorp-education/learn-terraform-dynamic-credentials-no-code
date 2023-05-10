@@ -40,7 +40,7 @@ resource "tfe_variable_set" "tfe_credentials" {
 }
 
 resource "tfe_project_variable_set" "tfe_credentials" {
-  variable_set_id = tfe_variable_set.aws_credentials.id
+  variable_set_id = tfe_variable_set.tfe_credentials.id
   project_id = tfe_project.trust_relationships.id
 }
 

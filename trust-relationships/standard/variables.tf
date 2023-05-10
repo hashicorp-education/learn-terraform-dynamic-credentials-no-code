@@ -29,6 +29,5 @@ variable "tfc_project_name" {
 
 variable "tfc_workspace_name" {
   type        = string
-  default     = "*"
   description = "The name of the workspace that you'd like to create and connect to AWS"
 }
