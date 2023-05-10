@@ -31,7 +31,7 @@ resource "aws_iam_policy" "trust_relationships" {
     Statement = [
       {
         Action = [
-          "iam:*",
+          "*",
         ]
         Effect   = "Allow"
         Resource = "*"
