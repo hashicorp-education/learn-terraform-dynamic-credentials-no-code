@@ -1,7 +1,9 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-provider "aws" { }
+provider "aws" {
+  region = var.aws_region
+}
 
 provider "tfe" {
   hostname = var.tfc_hostname

@@ -1,3 +1,9 @@
+variable "aws_region" {
+  type        = string
+  default     = "us-east-2"
+  description = "AWS region for all resources"
+}
+
 variable "tfc_aws_audience" {
   type        = string
   default     = "aws.workload.identity"

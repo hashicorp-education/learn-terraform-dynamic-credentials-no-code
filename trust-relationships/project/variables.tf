@@ -1,6 +1,12 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
+variable "aws_region" {
+  type        = string
+  default     = "us-east-2"
+  description = "AWS region for all resources"
+}
+
 variable "tfc_hostname" {
   type        = string
   default     = "app.terraform.io"
