@@ -52,6 +52,6 @@ variable "vcs_oath_client_name" {
 
 variable "vcs_service_provider" {
   type = string
-  descriptio = "VCS service provider"
+  description = "VCS service provider"
   default = "github"
 }
