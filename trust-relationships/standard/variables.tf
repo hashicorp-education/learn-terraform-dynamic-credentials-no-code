@@ -31,3 +31,27 @@ variable "tfc_workspace_name" {
   type        = string
   description = "The name of the workspace that you'd like to create and connect to AWS"
 }
+
+variable "vcs_identifier" {
+  type = string
+  description = "Identifier for VCS repo"
+  default = "robin-norwood/learn-terraform-dynamic-credentials-workshop"
+}
+
+variable "vcs_working_directory" {
+  type = string
+  description = "Working directory"
+  default = "/infra"
+}
+
+variable "vcs_oath_client_name" {
+  type = string
+  description = "Name of OAuth client"
+  default = "GitHub.com (robin)"
+}
+
+variable "vcs_service_provider" {
+  type = string
+  descriptio = "VCS service provider"
+  default = "github"
+}

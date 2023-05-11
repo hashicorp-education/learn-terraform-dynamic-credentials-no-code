@@ -5,13 +5,20 @@ provider "tfe" {
   hostname = var.tfc_hostname
 }
 
+data "tfe_oauth_client" "client" {
+  organization = var.tfc_organization_name
+  name = var.vcs_oath_client_name
+  service_provider = var.vcs_service_provider
+}
+
 resource "tfe_workspace" "trusted_workspace" {
   name         = var.tfc_workspace_name
   organization = var.tfc_organization_name
-  working_directory = "/infra"
+  working_directory = var.vcs_working_directory
+
   vcs_repo {
-    identifier = "robin-norwood/learn-terraform-dynamic-credentials-workshop"
-    oauth_token_id = "ot-TxSTX4vykTCHGeXD"
+    identifier = var.vcs_identifier
+    oauth_token_id = tfe_oauth_client.client.id
   }
 }
 
