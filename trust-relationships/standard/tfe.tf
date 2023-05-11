@@ -18,7 +18,7 @@ resource "tfe_workspace" "trusted_workspace" {
 
   vcs_repo {
     identifier = var.vcs_identifier
-    oauth_token_id = tfe_oauth_client.client.id
+    oauth_token_id = data.tfe_oauth_client.client.id
   }
 }
 
