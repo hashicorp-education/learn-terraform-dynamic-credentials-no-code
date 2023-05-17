@@ -6,23 +6,6 @@ resource "aws_iam_access_key" "secrets_engine_credentials" {
   user = aws_iam_user.secrets_engine.name
 }
 
-resource "aws_iam_user_policy" "vault_secrets_engine_generate_credentials" {
-  user = aws_iam_user.secrets_engine.name
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "sts:AssumeRole",
-        ]
-        Effect   = "Allow"
-        Resource = "${aws_iam_role.tfc_role.arn}"
-      },
-    ]
-  })
-}
-
 resource "aws_iam_role" "tfc_role" {
   name = "tfc-role"
 
@@ -92,6 +75,23 @@ path "aws/sts/${var.aws_secret_backend_role_name}" {
 EOT
 }
 
+resource "vault_auth_backend" "userpass" {
+  type = "userpass"
+}
+
+resource "vault_generic_endpoint" "trust_relationships" {
+  depends_on           = [vault_auth_backend.userpass]
+  path                 = "auth/userpass/users/trust_relationships"
+  ignore_absent_fields = true
+
+  data_json = <<EOT
+{
+  "policies": ["tfc-secrets-engine-policy"],
+  "password": "changeme"
+}
+EOT
+}
+
 resource "tfe_variable_set" "vault_credentials" {
   name         = "Vault Credentials for trust relationships"
   description  = "Vault Credentials for trust relationships project."
@@ -100,32 +100,39 @@ resource "tfe_variable_set" "vault_credentials" {
 
 resource "tfe_project_variable_set" "vault_credentials" {
   variable_set_id = tfe_variable_set.vault_credentials.id
-  project_id = tfe_project.trust_relationships.id
+  project_id      = tfe_project.trust_relationships.id
 }
 
 resource "tfe_variable" "tfc_vault_addr" {
-  key       = "TFC_VAULT_ADDR"
-  value     = var.vault_url
-  category  = "env"
-  sensitive = true
-  description = "The address of the Vault instance runs will access."
+  key             = "TFC_VAULT_ADDR"
+  value           = var.vault_url
+  category        = "env"
+  sensitive       = true
+  description     = "The address of the Vault instance runs will access."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
 resource "tfe_variable" "tfc_aws_mount_path" {
-  key      = "TFC_VAULT_BACKED_AWS_MOUNT_PATH"
-  value    = vault_aws_secret_backend.aws_secret_backend.path
-  category = "env"
-  description = "Path to where the AWS Secrets Engine is mounted in Vault."
+  key             = "TFC_VAULT_BACKED_AWS_MOUNT_PATH"
+  value           = vault_aws_secret_backend.aws_secret_backend.path
+  category        = "env"
+  description     = "Path to where the AWS Secrets Engine is mounted in Vault."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
 resource "tfe_variable" "tfc_vault_token" {
-  key      = "VAULT_TOKEN"
-  value    = var.vault_token
-  category = "env"
-  sensitive = true
-  description = "Vault token."
+  key             = "VAULT_TOKEN"
+  value           = var.vault_token
+  category        = "env"
+  sensitive       = true
+  description     = "Vault token."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
+resource "tfe_variable" "vault_aws_secrets_engine_user_name" {
+  key             = "vault_aws_secrets_engine_user_name"
+  value           = aws_iam_user.secrets_engine.name
+  category        = "terraform"
+  description     = "Username of the vault secrets engine user in AWS."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}

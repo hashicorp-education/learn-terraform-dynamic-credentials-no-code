@@ -7,13 +7,3 @@ output "role_arn" {
   description = "ARN for trust relationship role"
   value       = aws_iam_role.tfc_role.arn
 }
-
-output "iam_policy_arn" {
-  description = "Policy for trust relationship"
-  value       = aws_iam_policy.tfc_policy.arn
-}
-
-output "iam_policy" {
-  description = "Policy for trust relationship"
-  value       = jsondecode(aws_iam_policy.tfc_policy.policy)
-}

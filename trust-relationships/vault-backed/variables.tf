@@ -54,6 +54,11 @@ variable "tfc_vault_audience" {
   description = "The audience value to use in run identity tokens"
 }
 
+variable "vault_aws_secrets_engine_user_name" {
+  type = string
+  description = "Username of the AWS secrets engine user"
+}
+
 variable "aws_region" {
   type        = string
   default     = "us-east-2"

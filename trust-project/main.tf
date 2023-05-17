@@ -19,13 +19,13 @@ resource "tfe_project" "trust_relationships" {
 }
 
 resource "tfe_team" "trust_relationships" {
-  name = var.tfc_trust_team_name
+  name         = var.tfc_trust_team_name
   organization = var.tfc_organization_name
   organization_access {
-    read_workspaces = true
-    read_projects = true
+    read_workspaces   = true
+    read_projects     = true
     manage_workspaces = true
-    manage_projects = true
+    manage_projects   = true
   }
 }
 
@@ -41,7 +41,7 @@ resource "tfe_variable_set" "tfe_credentials" {
 
 resource "tfe_project_variable_set" "tfe_credentials" {
   variable_set_id = tfe_variable_set.tfe_credentials.id
-  project_id = tfe_project.trust_relationships.id
+  project_id      = tfe_project.trust_relationships.id
 }
 
 resource "tfe_variable" "organization_name" {

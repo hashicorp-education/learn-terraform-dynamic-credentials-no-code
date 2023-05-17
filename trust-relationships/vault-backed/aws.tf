@@ -5,14 +5,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_iam_user" "secrets_engine" {
-  name = "hcp-vault-secrets-engine"
-}
-
-resource "aws_iam_access_key" "secrets_engine_credentials" {
-  user = aws_iam_user.secrets_engine.name
-}
-
 resource "aws_iam_user_policy" "vault_secrets_engine_generate_credentials" {
   user = aws_iam_user.secrets_engine.name
 
@@ -69,4 +61,3 @@ resource "aws_iam_role_policy_attachment" "tfc_policy_attachment" {
   role       = aws_iam_role.tfc_role.name
   policy_arn = aws_iam_policy.tfc_policy.arn
 }
-

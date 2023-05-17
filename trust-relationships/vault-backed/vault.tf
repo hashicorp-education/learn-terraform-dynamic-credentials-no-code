@@ -5,13 +5,6 @@ provider "vault" {
   address = var.vault_url
 }
 
-resource "vault_jwt_auth_backend" "tfc_jwt" {
-  path               = var.jwt_backend_path
-  type               = "jwt"
-  oidc_discovery_url = "https://${var.tfc_hostname}"
-  bound_issuer       = "https://${var.tfc_hostname}"
-}
-
 resource "vault_jwt_auth_backend_role" "tfc_role" {
   namespace      = var.vault_namespace
   backend        = vault_jwt_auth_backend.tfc_jwt.path

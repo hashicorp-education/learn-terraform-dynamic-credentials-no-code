@@ -1,9 +1,3 @@
-variable "aws_region" {
-  type        = string
-  default     = "us-east-2"
-  description = "AWS region for all resources"
-}
-
 variable "tfc_aws_audience" {
   type        = string
   default     = "aws.workload.identity"
@@ -29,29 +23,12 @@ variable "tfc_project_name" {
 
 variable "tfc_workspace_name" {
   type        = string
+  default     = "dynamic-credentials-trust-relationship"
   description = "The name of the workspace that you'd like to create and connect to AWS"
 }
 
-variable "vcs_identifier" {
-  type = string
-  description = "Identifier for VCS repo"
-  default = "robin-norwood/learn-terraform-dynamic-credentials-workshop"
-}
-
-variable "vcs_working_directory" {
-  type = string
-  description = "Working directory"
-  default = "/infra"
-}
-
-variable "vcs_oath_client_name" {
-  type = string
-  description = "Name of OAuth client"
-  default = "GitHub.com (robin)"
-}
-
-variable "vcs_service_provider" {
-  type = string
-  description = "VCS service provider"
-  default = "github"
+variable "aws_region" {
+  type        = string
+  default     = "us-east-2"
+  description = "AWS region for all resources"
 }

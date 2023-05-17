@@ -16,6 +16,8 @@ resource "aws_iam_openid_connect_provider" "tfc_provider" {
 }
 
 resource "aws_iam_role" "tfc_role" {
+  name = "tfc-role"
+
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -41,7 +43,8 @@ EOF
 }
 
 resource "aws_iam_policy" "tfc_policy" {
-  description = "TFC run policy for org: ${var.tfc_organization_name}, project: ${var.tfc_project_name}, workspace: ${var.tfc_workspace_name}"
+  name        = "tfc-policy"
+  description = "TFC run policy"
 
   policy = <<EOF
 {
