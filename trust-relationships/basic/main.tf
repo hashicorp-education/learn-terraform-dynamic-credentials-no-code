@@ -16,8 +16,6 @@ resource "aws_iam_openid_connect_provider" "tfc_provider" {
 }
 
 resource "aws_iam_role" "tfc_role" {
-  name = "tfc-role"
-
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",

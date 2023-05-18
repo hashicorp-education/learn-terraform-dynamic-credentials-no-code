@@ -56,3 +56,9 @@ variable "aws_secret_backend_role_name" {
   type        = string
   description = "Name of AWS secret backend role for runs to use"
 }
+
+variable "vault_user_name" {
+  type = string
+  description = "Username used to create trust relationships in vault"
+  default = "trust_relationships"
+}

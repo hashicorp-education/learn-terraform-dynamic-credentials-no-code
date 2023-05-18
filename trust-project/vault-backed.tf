@@ -75,22 +75,28 @@ path "aws/sts/${var.aws_secret_backend_role_name}" {
 EOT
 }
 
+resource "random_password" "vault" {
+  length = 24
+}
+
 resource "vault_auth_backend" "userpass" {
   type = "userpass"
 }
 
 resource "vault_generic_endpoint" "trust_relationships" {
   depends_on           = [vault_auth_backend.userpass]
-  path                 = "auth/userpass/users/trust_relationships"
+  path                 = "auth/userpass/users/${var.vault_user_name}"
   ignore_absent_fields = true
 
   data_json = <<EOT
 {
   "policies": ["tfc-secrets-engine-policy"],
-  "password": "changeme"
+  "password": "${random_password.vault.result}"
 }
 EOT
 }
+
+
 
 resource "tfe_variable_set" "vault_credentials" {
   name         = "Vault Credentials for trust relationships"
@@ -130,9 +136,19 @@ resource "tfe_variable" "tfc_vault_token" {
 }
 
 resource "tfe_variable" "vault_aws_secrets_engine_user_name" {
-  key             = "vault_aws_secrets_engine_user_name"
-  value           = aws_iam_user.secrets_engine.name
-  category        = "terraform"
+  key             = "TERRAFORM_VAULT_USERNAME"
+  value           = var.vault_user_name
+  category        = "env"
+  sensitive = true
+  description     = "Username of the vault secrets engine user in AWS."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
+resource "tfe_variable" "vault_aws_secrets_engine_user_password" {
+  key             = "TERRAFORM_VAULT_PASSWORD"
+  value           = random_password.vault.result
+  category        = "env"
+  sensitive = true
   description     = "Username of the vault secrets engine user in AWS."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }

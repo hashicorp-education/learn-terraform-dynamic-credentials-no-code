@@ -3,6 +3,8 @@
 
 provider "vault" {
   address = var.vault_url
+
+  auth_login_userpass { }
 }
 
 resource "vault_jwt_auth_backend_role" "tfc_role" {
