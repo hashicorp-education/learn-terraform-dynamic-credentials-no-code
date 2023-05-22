@@ -5,13 +5,25 @@ provider "tfe" {
   hostname = var.tfc_hostname
 }
 
-resource "tfe_workspace" "trust_workspace" {
+data "tfe_oauth_client" "client" {
+  organization = var.tfc_organization_name
+  name = var.vcs_oath_client_name
+  service_provider = var.vcs_service_provider
+}
+
+resource "tfe_workspace" "trusted_workspace" {
   name         = var.tfc_workspace_name
   organization = var.tfc_organization_name
+  working_directory = var.vcs_working_directory
+
+  vcs_repo {
+    identifier = var.vcs_identifier
+    oauth_token_id = data.tfe_oauth_client.client.oauth_token_id
+  }
 }
 
 resource "tfe_variable" "enable_vault_provider_auth" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_PROVIDER_AUTH"
   value    = "true"
@@ -21,7 +33,7 @@ resource "tfe_variable" "enable_vault_provider_auth" {
 }
 
 resource "tfe_variable" "tfc_vault_addr" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key       = "TFC_VAULT_ADDR"
   value     = var.vault_url
@@ -32,7 +44,7 @@ resource "tfe_variable" "tfc_vault_addr" {
 }
 
 resource "tfe_variable" "tfc_vault_role" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_RUN_ROLE"
   value    = vault_jwt_auth_backend_role.tfc_role.role_name
@@ -42,7 +54,7 @@ resource "tfe_variable" "tfc_vault_role" {
 }
 
 resource "tfe_variable" "tfc_vault_namespace" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_NAMESPACE"
   value    = var.vault_namespace
@@ -52,7 +64,7 @@ resource "tfe_variable" "tfc_vault_namespace" {
 }
 
 resource "tfe_variable" "enable_aws_provider_auth" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_BACKED_AWS_AUTH"
   value    = "true"
@@ -62,7 +74,7 @@ resource "tfe_variable" "enable_aws_provider_auth" {
 }
 
 resource "tfe_variable" "tfc_aws_mount_path" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_BACKED_AWS_MOUNT_PATH"
   value    = "aws"
@@ -72,7 +84,7 @@ resource "tfe_variable" "tfc_aws_mount_path" {
 }
 
 resource "tfe_variable" "tfc_aws_auth_type" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_BACKED_AWS_AUTH_TYPE"
   value    = vault_aws_secret_backend_role.aws_secret_backend_role.credential_type
@@ -82,7 +94,7 @@ resource "tfe_variable" "tfc_aws_auth_type" {
 }
 
 resource "tfe_variable" "tfc_aws_run_role_arn" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_BACKED_AWS_RUN_ROLE_ARN"
   value    = aws_iam_role.tfc_role.arn
@@ -92,7 +104,7 @@ resource "tfe_variable" "tfc_aws_run_role_arn" {
 }
 
 resource "tfe_variable" "tfc_aws_run_vault_role" {
-  workspace_id = tfe_workspace.trust_workspace.id
+  workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_BACKED_AWS_RUN_VAULT_ROLE"
   value    = vault_aws_secret_backend_role.aws_secret_backend_role.name

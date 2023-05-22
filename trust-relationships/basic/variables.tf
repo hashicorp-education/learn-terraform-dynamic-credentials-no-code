@@ -27,6 +27,24 @@ variable "tfc_workspace_name" {
   description = "The name of the workspace that you'd like to create and connect to AWS"
 }
 
+# variable "vcs_oauth_name" {
+#   type        = string
+#   default     = "GitHub.com (robin)"
+#   description = "The name of the OAuth clinet"
+# }
+
+# variable "vcs_identifier" {
+#   type        = string
+#   default     = "robin-norwood/learn-terraform-dynamic-credentials-workshop"
+#   description = "Identifier for VCS repository"
+# }
+
+# variable "vcs_working_directory" {
+#   type        = string
+#   default     = "/infra"
+#   description = "Working directory inside VCS repository"
+# }
+
 variable "aws_region" {
   type        = string
   default     = "us-east-2"
