@@ -96,8 +96,6 @@ resource "vault_generic_endpoint" "trust_relationships" {
 EOT
 }
 
-
-
 resource "tfe_variable_set" "vault_credentials" {
   name         = "Vault Credentials for trust relationships"
   description  = "Vault Credentials for trust relationships project."
@@ -111,6 +109,15 @@ resource "tfe_project_variable_set" "vault_credentials" {
 
 resource "tfe_variable" "tfc_vault_addr" {
   key             = "TFC_VAULT_ADDR"
+  value           = var.vault_url
+  category        = "env"
+  sensitive       = true
+  description     = "The address of the Vault instance runs will access."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
+resource "tfe_variable" "tfc_vault_url" {
+  key             = "TF_VAR_VAULT_URL"
   value           = var.vault_url
   category        = "env"
   sensitive       = true
@@ -135,12 +142,21 @@ resource "tfe_variable" "tfc_vault_token" {
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
-resource "tfe_variable" "vault_aws_secrets_engine_user_name" {
+resource "tfe_variable" "vault_aws_secrets_engine_user_name_env" {
   key             = "TERRAFORM_VAULT_USERNAME"
   value           = var.vault_user_name
   category        = "env"
   sensitive = true
-  description     = "Username of the vault secrets engine user in AWS."
+  description     = "Username of the vault secrets engine user."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
+resource "tfe_variable" "vault_aws_secrets_engine_user_name_terraform" {
+  key             = "vault_aws_secrets_engine_user_name"
+  value           = var.vault_user_name
+  category        = "terraform"
+  sensitive = true
+  description     = "Username of the vault secrets engine user."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
@@ -149,6 +165,14 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_password" {
   value           = random_password.vault.result
   category        = "env"
   sensitive = true
-  description     = "Username of the vault secrets engine user in AWS."
+  description     = "Password of the vault secrets engine user."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
+resource "tfe_variable" "vault_aws_secrets_engine_backend_role_name" {
+  key             = "aws_secrets_engine_backend_role_name"
+  value           = vault_aws_secret_backend_role.aws_secret_backend_role.name
+  category        = "terraform"
+  description     = "Name of AWS secret backend role."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }

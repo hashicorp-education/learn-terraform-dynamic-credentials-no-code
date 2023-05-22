@@ -1,7 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-variable "aws_secret_backend_role_name" {
+variable "aws_secrets_engine_backend_role_name" {
   type        = string
   description = "Name of AWS secret backend role for runs to use"
 }
@@ -31,10 +31,10 @@ variable "tfc_workspace_name" {
 
 # Variables for Vault
 
-variable "vault_url" {
-  type        = string
-  description = "The URL of the Vault instance you'd like to use with Terraform Cloud"
-}
+# variable "vault_url" {
+#   type        = string
+#   description = "The URL of the Vault instance you'd like to use with Terraform Cloud"
+# }
 
 variable "jwt_backend_path" {
   type        = string
