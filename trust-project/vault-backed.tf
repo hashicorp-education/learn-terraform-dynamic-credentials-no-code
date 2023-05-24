@@ -116,6 +116,14 @@ resource "tfe_variable" "tfc_vault_addr" {
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
+resource "tfe_variable" "tfc_vault_policy_name" {
+  key             = "TF_VAR_vault_policy_name"
+  value           = vault_policy.tfc_policy.name
+  category        = "env"
+  description     = "The name of the vault policy."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
 resource "tfe_variable" "tfc_vault_url" {
   key             = "TF_VAR_vault_url"
   value           = var.vault_url

@@ -64,6 +64,11 @@ variable "vault_aws_secrets_engine_user_name" {
   description = "Username of the AWS secrets engine user"
 }
 
+variable "vault_policy_name" {
+  type = string
+  description = "Name of the vault policy to use"
+}
+
 variable "aws_iam_user_name" {
   type = string
   description = "AWS IAM user name"

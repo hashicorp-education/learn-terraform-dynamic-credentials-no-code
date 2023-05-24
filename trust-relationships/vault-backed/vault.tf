@@ -9,9 +9,9 @@ provider "vault" {
 
 resource "vault_jwt_auth_backend_role" "tfc_role" {
   namespace      = var.vault_namespace
-  backend        = vault_jwt_auth_backend.tfc_jwt.path
+  backend        = var.jwt_backend_path
   role_name      = "tfc-role"
-  token_policies = [vault_policy.tfc_policy.name]
+  token_policies = [var.vault_policy_name]
 
   bound_audiences   = [var.tfc_vault_audience]
   bound_claims_type = "glob"
