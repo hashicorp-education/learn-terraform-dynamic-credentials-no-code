@@ -59,6 +59,16 @@ variable "vault_aws_secrets_engine_user_name" {
   description = "Username of the AWS secrets engine user"
 }
 
+variable "aws_iam_user_name" {
+  type = string
+  description = "AWS IAM user name"
+}
+
+variable "aws_iam_user_arn" {
+  type = string
+  description = "AWS IAM user ARN"
+}
+
 variable "aws_region" {
   type        = string
   default     = "us-east-2"

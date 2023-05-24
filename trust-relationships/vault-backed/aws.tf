@@ -6,7 +6,7 @@ provider "aws" {
 }
 
 resource "aws_iam_user_policy" "vault_secrets_engine_generate_credentials" {
-  user = aws_iam_user.secrets_engine.name
+  user = var.aws_iam_user_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -31,7 +31,7 @@ resource "aws_iam_role" "tfc_role" {
           Condition = {}
           Effect    = "Allow"
           Principal = {
-            AWS = aws_iam_user.secrets_engine.arn
+            AWS = var.aws_iam_user_arn
           }
         },
       ]

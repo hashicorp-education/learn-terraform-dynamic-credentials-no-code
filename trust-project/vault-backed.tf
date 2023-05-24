@@ -125,6 +125,22 @@ resource "tfe_variable" "tfc_vault_url" {
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
+resource "tfe_variable" "aws_iam_user_name" {
+  key             = "TF_VAR_AWS_IAM_USER_NAME"
+  value           = aws_iam_user.secrets_engine.name
+  category        = "env"
+  description     = "The name of the AWS IAM user."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
+resource "tfe_variable" "aws_iam_user_arn" {
+  key             = "TF_VAR_AWS_IAM_USER_ARN"
+  value           = aws_iam_user.secrets_engine.arn
+  category        = "env"
+  description     = "The address of the Vault instance runs will access."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
 resource "tfe_variable" "tfc_aws_mount_path" {
   key             = "TFC_VAULT_BACKED_AWS_MOUNT_PATH"
   value           = vault_aws_secret_backend.aws_secret_backend.path
