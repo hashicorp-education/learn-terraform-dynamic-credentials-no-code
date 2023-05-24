@@ -7,3 +7,12 @@ output "tfc_org_name" {
   description = "Organization name"
   value       = var.tfc_organization_name
 }
+
+output "vault_username" {
+  value = var.vault_user_name
+}
+
+output "vault_password" {
+  value = random_password.vault.result
+  sensitive = true
+}

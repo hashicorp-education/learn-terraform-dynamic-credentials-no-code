@@ -4,7 +4,9 @@
 provider "vault" {
   address = var.vault_url
 
-  auth_login_userpass { }
+  auth_login_userpass {
+    token_policies = ["admin", "default"]
+  }
 }
 
 resource "vault_jwt_auth_backend_role" "tfc_role" {

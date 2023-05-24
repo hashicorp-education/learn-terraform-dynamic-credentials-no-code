@@ -90,7 +90,7 @@ resource "vault_generic_endpoint" "trust_relationships" {
 
   data_json = <<EOT
 {
-  "policies": ["tfc-secrets-engine-policy"],
+  "policies": ["tfc-secrets-engine-policy", "admin"],
   "password": "${random_password.vault.result}"
 }
 EOT
@@ -157,12 +157,20 @@ resource "tfe_variable" "tfc_aws_mount_path" {
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
-resource "tfe_variable" "tfc_vault_token" {
-  key             = "VAULT_TOKEN"
-  value           = var.vault_token
+# resource "tfe_variable" "tfc_vault_token" {
+#   key             = "VAULT_TOKEN"
+#   value           = var.vault_token
+#   category        = "env"
+#   sensitive       = true
+#   description     = "Vault token."
+#   variable_set_id = tfe_variable_set.vault_credentials.id
+# }
+
+resource "tfe_variable" "tfc_vault_namespace" {
+  key             = "VAULT_NAMESPACE"
+  value           = "admin"
   category        = "env"
-  sensitive       = true
-  description     = "Vault token."
+  description     = "Vault namespace."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
@@ -170,7 +178,7 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_name_env" {
   key             = "TERRAFORM_VAULT_USERNAME"
   value           = var.vault_user_name
   category        = "env"
-  sensitive = true
+#  sensitive = true
   description     = "Username of the vault secrets engine user."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
@@ -188,7 +196,7 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_password" {
   key             = "TERRAFORM_VAULT_PASSWORD"
   value           = random_password.vault.result
   category        = "env"
-  sensitive = true
+#  sensitive = true
   description     = "Password of the vault secrets engine user."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
