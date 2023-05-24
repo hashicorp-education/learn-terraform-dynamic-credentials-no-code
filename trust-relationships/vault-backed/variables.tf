@@ -48,6 +48,11 @@ variable "vault_namespace" {
   description = "The namespace of the Vault instance you'd like to create the AWS and jwt auth backends in"
 }
 
+variable "vault_url" {
+  type        = string
+  description = "URL of vault cluster"
+}
+
 variable "tfc_vault_audience" {
   type        = string
   default     = "vault.workload.identity"
