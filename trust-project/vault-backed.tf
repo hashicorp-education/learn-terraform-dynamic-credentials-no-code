@@ -117,7 +117,7 @@ resource "tfe_variable" "tfc_vault_addr" {
 }
 
 resource "tfe_variable" "tfc_vault_url" {
-  key             = "TF_VAR_VAULT_URL"
+  key             = "TF_VAR_vault_url"
   value           = var.vault_url
   category        = "env"
   sensitive       = true
@@ -126,7 +126,7 @@ resource "tfe_variable" "tfc_vault_url" {
 }
 
 resource "tfe_variable" "aws_iam_user_name" {
-  key             = "TF_VAR_AWS_IAM_USER_NAME"
+  key             = "TF_VAR_aws_iam_user_name"
   value           = aws_iam_user.secrets_engine.name
   category        = "env"
   description     = "The name of the AWS IAM user."
@@ -134,7 +134,7 @@ resource "tfe_variable" "aws_iam_user_name" {
 }
 
 resource "tfe_variable" "aws_iam_user_arn" {
-  key             = "TF_VAR_AWS_IAM_USER_ARN"
+  key             = "TF_VAR_aws_iam_user_arn"
   value           = aws_iam_user.secrets_engine.arn
   category        = "env"
   description     = "The address of the Vault instance runs will access."
