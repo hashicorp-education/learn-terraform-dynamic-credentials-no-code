@@ -5,6 +5,7 @@ provider "vault" {
   address = var.vault_url
 
   auth_login_userpass {
+    namespace = "admin"
   }
 }
 
