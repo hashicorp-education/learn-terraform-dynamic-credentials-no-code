@@ -23,8 +23,7 @@ variable "tfc_project_name" {
 
 variable "tfc_workspace_name" {
   type        = string
-  default     = "dynamic-credentials-trust-relationship"
-  description = "The name of the workspace that you'd like to create and connect to AWS"
+  description = "The name of the workspace that you'd like to use"
 }
 
 # variable "vcs_oauth_name" {
