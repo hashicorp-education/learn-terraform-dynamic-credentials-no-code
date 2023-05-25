@@ -4,6 +4,7 @@
 variable "aws_secrets_engine_backend_role_name" {
   type        = string
   description = "Name of AWS secret backend role for runs to use"
+  default = "trust_relationships"
 }
 
 variable "tfc_hostname" {
@@ -25,7 +26,6 @@ variable "tfc_project_name" {
 
 variable "tfc_workspace_name" {
   type        = string
-  default     = "vault-backed-aws-auth"
   description = "The name of the workspace that you'd like to create and connect to AWS"
 }
 
@@ -51,6 +51,7 @@ variable "vault_namespace" {
 variable "vault_url" {
   type        = string
   description = "URL of vault cluster"
+  default = "localhost:3000"
 }
 
 variable "tfc_vault_audience" {
@@ -62,21 +63,25 @@ variable "tfc_vault_audience" {
 variable "vault_aws_secrets_engine_user_name" {
   type = string
   description = "Username of the AWS secrets engine user"
+  default = "trust_relationships"
 }
 
 variable "vault_policy_name" {
   type = string
   description = "Name of the vault policy to use"
+  default = "trust_relationships"
 }
 
 variable "aws_iam_user_name" {
   type = string
   description = "AWS IAM user name"
+  default = "trust_relationships"
 }
 
 variable "aws_iam_user_arn" {
   type = string
   description = "AWS IAM user ARN"
+  default = "trust_relationships"
 }
 
 variable "aws_region" {
