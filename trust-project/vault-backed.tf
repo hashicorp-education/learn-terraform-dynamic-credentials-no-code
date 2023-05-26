@@ -72,6 +72,10 @@ path "auth/token/revoke-self" {
 path "aws/sts/${var.aws_secret_backend_role_name}" {
   capabilities = [ "read" ]
 }
+
+path "auth/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
 EOT
 }
 
@@ -90,7 +94,7 @@ resource "vault_generic_endpoint" "trust_relationships" {
 
   data_json = <<EOT
 {
-  "policies": ["tfc-secrets-engine-policy", "admin"],
+  "policies": ["tfc-secrets-engine-policy"],
   "password": "${random_password.vault.result}"
 }
 EOT
