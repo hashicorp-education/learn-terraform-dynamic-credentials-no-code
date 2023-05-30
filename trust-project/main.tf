@@ -34,7 +34,7 @@ resource "tfe_team_token" "trust_relationships" {
 }
 
 resource "tfe_variable_set" "tfe_credentials" {
-  name         = "TFE Credentials for trust relationships"
+  name         = var.tfc_variable_set_name
   description  = "TFE token and organization name for trust relationships."
   organization = var.tfc_organization_name
 }

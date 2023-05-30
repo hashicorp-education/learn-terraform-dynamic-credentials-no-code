@@ -24,7 +24,7 @@ resource "aws_iam_user_policy" "trust_relationships" {
 }
 
 resource "tfe_variable_set" "aws_credentials" {
-  name         = "AWS Credentials for trust relationships"
+  name         = var.tfc_variable_set_aws_credentials
   description  = "AWS secret key and secret key ID to configure trust relationships."
   organization = var.tfc_organization_name
 }

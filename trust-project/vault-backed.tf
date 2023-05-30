@@ -101,7 +101,7 @@ EOT
 }
 
 resource "tfe_variable_set" "vault_credentials" {
-  name         = "Vault Credentials for trust relationships"
+  name         = var.tfc_variable_set_vault_credentials
   description  = "Vault Credentials for trust relationships project."
   organization = var.tfc_organization_name
 }

@@ -62,3 +62,21 @@ variable "vault_user_name" {
   description = "Username used to create trust relationships in vault"
   default = "trust_relationships"
 }
+
+variable "tfc_variable_set_name" {
+  type = string
+  description = "TFC Variable Set Name"
+  default = "TFE Credentials for trust relationships"
+}
+
+variable "tfc_variable_set_aws_credentials" {
+  type = string
+  description = "TFC Variable Set for AWS Credentials"
+  default = "AWS Credentials for trust relationships"
+}
+
+variable "tfc_variable_set_vault_credentials" {
+  type = string
+  description = "TFC Variable Set for Vault Credentials"
+  default = "Vault Credentials for trust relationships"
+}
