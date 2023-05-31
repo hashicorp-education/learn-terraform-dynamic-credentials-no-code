@@ -15,10 +15,10 @@ output "policy" {
 
 output "tfc_workspace_name" {
   description = "Name of configured workspace"
-  value       = tfe_workspace.trust_workspace.name
+  value       = tfe_workspace.trusted_workspace.name
 }
 
 output "tfc_workspace_url" {
   description = "URL of configured workspace"
-  value       = tfe_workspace.trust_workspace.html_url
+  value       = tfe_workspace.trusted_workspace.html_url
 }
