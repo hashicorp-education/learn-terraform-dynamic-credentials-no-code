@@ -1,103 +1,57 @@
-resource "aws_iam_user" "secrets_engine" {
-  name = "hcp-vault-secrets-engine"
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+provider "tfe" {
+  hostname = var.tfc_hostname
 }
 
-resource "aws_iam_access_key" "secrets_engine_credentials" {
-  user = aws_iam_user.secrets_engine.name
+resource "tfe_project" "trust_relationships" {
+  name         = var.tfc_trust_project_name
+  organization = var.tfc_organization_name
 }
 
-resource "aws_iam_role" "tfc_role" {
-  name = "tfc-role"
+resource "tfe_team" "trust_relationships" {
+  name         = var.tfc_trust_team_name
+  organization = var.tfc_organization_name
 
-  assume_role_policy = jsonencode(
-    {
-      Statement = [
-        {
-          Action    = "sts:AssumeRole"
-          Condition = {}
-          Effect    = "Allow"
-          Principal = {
-            AWS = aws_iam_user.secrets_engine.arn
-          }
-        },
-      ]
-      Version = "2012-10-17"
-    }
-  )
+  organization_access {
+    read_workspaces   = true
+    read_projects     = true
+    manage_workspaces = true
+    manage_projects   = true
+  }
 }
 
-resource "vault_aws_secret_backend" "aws_secret_backend" {
-  namespace = var.vault_namespace
-  path      = "aws"
-
-  access_key = aws_iam_access_key.secrets_engine_credentials.id
-  secret_key = aws_iam_access_key.secrets_engine_credentials.secret
+resource "tfe_team_token" "trust_relationships" {
+  team_id = tfe_team.trust_relationships.id
 }
 
-resource "vault_aws_secret_backend_role" "aws_secret_backend_role" {
-  backend         = vault_aws_secret_backend.aws_secret_backend.path
-  name            = var.aws_secret_backend_role_name
-  credential_type = "assumed_role"
-
-  role_arns = [aws_iam_role.tfc_role.arn]
+resource "tfe_variable_set" "tfe_credentials" {
+  name         = var.tfc_variable_set_name
+  description  = "TFE token and organization name for trust relationships."
+  organization = var.tfc_organization_name
 }
 
-resource "vault_jwt_auth_backend" "tfc_jwt" {
-  path               = var.jwt_backend_path
-  type               = "jwt"
-  oidc_discovery_url = "https://${var.tfc_hostname}"
-  bound_issuer       = "https://${var.tfc_hostname}"
+resource "tfe_project_variable_set" "tfe_credentials" {
+  variable_set_id = tfe_variable_set.tfe_credentials.id
+  project_id      = tfe_project.trust_relationships.id
 }
 
-resource "vault_policy" "tfc_policy" {
-  name = "tfc-secrets-engine-policy"
-
-  policy = <<EOT
-# Allow tokens to query themselves
-path "auth/token/lookup-self" {
-  capabilities = ["read"]
+resource "tfe_variable" "organization_name" {
+  key             = "tfc_organization_name"
+  value           = var.tfc_organization_name
+  category        = "terraform"
+  description     = "organization name"
+  variable_set_id = tfe_variable_set.tfe_credentials.id
 }
 
-# Allow tokens to renew themselves
-path "auth/token/renew-self" {
-    capabilities = ["update"]
-}
-
-# Allow tokens to revoke themselves
-path "auth/token/revoke-self" {
-    capabilities = ["update"]
-}
-
-# Allow Access to AWS Secrets Engine
-path "aws/sts/${var.aws_secret_backend_role_name}" {
-  capabilities = [ "read" ]
-}
-
-path "auth/*" {
-  capabilities = ["create", "read", "update", "delete", "list"]
-}
-EOT
-}
-
-resource "random_password" "vault" {
-  length = 24
-}
-
-resource "vault_auth_backend" "userpass" {
-  type = "userpass"
-}
-
-resource "vault_generic_endpoint" "trust_relationships" {
-  depends_on           = [vault_auth_backend.userpass]
-  path                 = "auth/userpass/users/${var.vault_user_name}"
-  ignore_absent_fields = true
-
-  data_json = <<EOT
-{
-  "policies": ["tfc-secrets-engine-policy"],
-  "password": "${random_password.vault.result}"
-}
-EOT
+resource "tfe_variable" "tfe_token" {
+  key             = "TFE_TOKEN"
+  value           = tfe_team_token.trust_relationships.token
+  category        = "env"
+  sensitive       = true
+  description     = "Team token"
+  variable_set_id = tfe_variable_set.tfe_credentials.id
 }
 
 resource "tfe_variable_set" "vault_credentials" {
@@ -182,7 +136,7 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_name_env" {
   key             = "TERRAFORM_VAULT_USERNAME"
   value           = var.vault_user_name
   category        = "env"
-#  sensitive = true
+  sensitive       = true
   description     = "Username of the vault secrets engine user."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
@@ -191,16 +145,16 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_name_terraform" {
   key             = "TF_VAR_vault_aws_secrets_engine_user_name"
   value           = var.vault_user_name
   category        = "env"
-  sensitive = true
+  sensitive       = true
   description     = "Username of the vault secrets engine user."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
 resource "tfe_variable" "vault_aws_secrets_engine_user_password" {
-  key             = "TERRAFORM_VAULT_PASSWORD"
-  value           = random_password.vault.result
-  category        = "env"
-#  sensitive = true
+  key      = "TERRAFORM_VAULT_PASSWORD"
+  value    = random_password.vault.result
+  category = "env"
+  #  sensitive = true
   description     = "Password of the vault secrets engine user."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }

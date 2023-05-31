@@ -9,10 +9,11 @@ output "tfc_org_name" {
 }
 
 output "vault_username" {
-  value = var.vault_user_name
+  value     = var.vault_user_name
+  sensitive = true
 }
 
 output "vault_password" {
-  value = random_password.vault.result
+  value     = random_password.vault.result
   sensitive = true
 }

@@ -1,4 +1,2 @@
 tfc_organization_name = "<YOUR_ORG>"
 vault_url             = "<YOUR_VAULT_URL>"
-
-aws_secret_backend_role_name = "edu-app"
