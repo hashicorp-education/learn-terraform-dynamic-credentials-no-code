@@ -10,7 +10,6 @@ provider "vault" {
 }
 
 resource "vault_jwt_auth_backend_role" "tfc_role" {
-#  namespace      = var.vault_namespace
   backend        = var.jwt_backend_path
   role_name      = "tfc-role"
   token_policies = [var.vault_policy_name]

@@ -1,7 +1,3 @@
-aws_secret_backend_role_name = "edu-app"
-
-tfc_hostname      	  = "app.terraform.io"
-tfc_organization_name = "<YOUR_ORG>"
-tfc_workspace_name	  = "vault-backed-aws-auth"
-
-vault_url = "<YOUR_VAULT_CLUSTER>"
+vcs_oauth_name = ""
+vcs_identifier = ""
+vcs_working_directory = ""

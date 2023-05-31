@@ -82,3 +82,21 @@ variable "aws_region" {
   default     = "us-east-2"
   description = "AWS region for all resources"
 }
+
+variable "vcs_oauth_name" {
+  type        = string
+  default     = "GitHub.com (robin)"
+  description = "The name of the OAuth clinet"
+}
+
+variable "vcs_identifier" {
+  type        = string
+  default     = "robin-norwood/learn-terraform-dynamic-credentials-workshop"
+  description = "Identifier for VCS repository"
+}
+
+variable "vcs_working_directory" {
+  type        = string
+  default     = "/infra"
+  description = "Working directory inside VCS repository"
+}
