@@ -29,13 +29,6 @@ variable "tfc_workspace_name" {
   description = "The name of the workspace that you'd like to create and connect to AWS"
 }
 
-# Variables for Vault
-
-# variable "vault_url" {
-#   type        = string
-#   description = "The URL of the Vault instance you'd like to use with Terraform Cloud"
-# }
-
 variable "jwt_backend_path" {
   type        = string
   default     = "jwt"

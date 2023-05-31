@@ -13,12 +13,12 @@ output "policy" {
   value = aws_iam_policy.tfc_policy.policy
 }
 
-# output "tfc_workspace_name" {
-#   description = "Name of configured workspace"
-#   value       = tfe_workspace.trust_workspace.name
-# }
+output "tfc_workspace_name" {
+  description = "Name of configured workspace"
+  value       = tfe_workspace.trust_workspace.name
+}
 
-# output "tfc_workspace_url" {
-#   description = "URL of configured workspace"
-#   value       = tfe_workspace.trust_workspace.html_url
-# }
+output "tfc_workspace_url" {
+  description = "URL of configured workspace"
+  value       = tfe_workspace.trust_workspace.html_url
+}

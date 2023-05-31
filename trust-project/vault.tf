@@ -6,8 +6,8 @@ resource "vault_aws_secret_backend" "aws_secret_backend" {
   namespace = var.vault_namespace
   path      = "aws"
 
-  access_key = aws_iam_access_key.secrets_engine_credentials.id
-  secret_key = aws_iam_access_key.secrets_engine_credentials.secret
+  access_key = aws_iam_access_key.trust_relationships.id
+  secret_key = aws_iam_access_key.trust_relationships.secret
 }
 
 resource "vault_aws_secret_backend_role" "aws_secret_backend_role" {
@@ -15,7 +15,7 @@ resource "vault_aws_secret_backend_role" "aws_secret_backend_role" {
   name            = var.vault_aws_secret_backend_role_name
   credential_type = "assumed_role"
 
-  role_arns = [aws_iam_role.secrets_engine.arn]
+  role_arns = [aws_iam_role.trust_relationships.arn]
 }
 
 resource "vault_jwt_auth_backend" "tfc_jwt" {

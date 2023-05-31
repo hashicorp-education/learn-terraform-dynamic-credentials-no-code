@@ -93,7 +93,7 @@ resource "tfe_variable" "tfc_vault_url" {
 
 resource "tfe_variable" "aws_iam_user_name" {
   key             = "TF_VAR_aws_iam_user_name"
-  value           = aws_iam_user.secrets_engine.name
+  value           = aws_iam_user.trust_relationships.name
   category        = "env"
   description     = "The name of the AWS IAM user."
   variable_set_id = tfe_variable_set.vault_credentials.id
@@ -101,7 +101,7 @@ resource "tfe_variable" "aws_iam_user_name" {
 
 resource "tfe_variable" "aws_iam_user_arn" {
   key             = "TF_VAR_aws_iam_user_arn"
-  value           = aws_iam_user.secrets_engine.arn
+  value           = aws_iam_user.trust_relationships.arn
   category        = "env"
   description     = "The address of the Vault instance runs will access."
   variable_set_id = tfe_variable_set.vault_credentials.id
@@ -164,5 +164,23 @@ resource "tfe_variable" "vault_aws_secrets_engine_backend_role_name" {
   value           = vault_aws_secret_backend_role.aws_secret_backend_role.name
   category        = "env"
   description     = "Name of AWS secret backend role."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
+resource "tfe_variable" "aws_access_key_id" {
+  key             = "AWS_ACCESS_KEY_ID"
+  value           = aws_iam_access_key.trust_relationships.id
+  category        = "env"
+  sensitive       = true
+  description     = "Secret key ID associated with the role used to create trust relationships"
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
+resource "tfe_variable" "aws_secret_access_key" {
+  key             = "AWS_SECRET_ACCESS_KEY"
+  value           = aws_iam_access_key.trust_relationships.secret
+  category        = "env"
+  sensitive       = true
+  description     = "Secret key associated with the role used to create trust relationships"
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
