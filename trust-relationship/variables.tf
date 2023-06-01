@@ -35,6 +35,11 @@ variable "jwt_backend_path" {
   description = "The path at which you'd like to mount the jwt auth backend in Vault"
 }
 
+variable "vault_aws_secret_backend_path" {
+  type        = string
+  description = "The path at which the AWS secret engine is mounted in Vault"
+}
+
 variable "vault_namespace" {
   type        = string
   default     = "admin"

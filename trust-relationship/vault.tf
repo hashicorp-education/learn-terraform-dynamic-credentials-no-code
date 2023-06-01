@@ -9,6 +9,14 @@ provider "vault" {
   }
 }
 
+resource "vault_aws_secret_backend_role" "aws_secret_backend_role" {
+  backend         = var.vault_aws_secret_backend_path
+  name            = var.aws_secret_backend_role_name
+  credential_type = "assumed_role"
+
+  role_arns = [aws_iam_role.tfc_role.arn]
+}
+
 resource "vault_jwt_auth_backend_role" "aws_secret_backend_role" {
   backend        = var.jwt_backend_path
   role_name      = "tfc-role"

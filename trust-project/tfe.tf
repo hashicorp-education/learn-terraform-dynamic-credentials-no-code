@@ -115,6 +115,14 @@ resource "tfe_variable" "tfc_aws_mount_path" {
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
+resource "tfe_variable" "tfc_aws_mount_path_tf" {
+  key             = "TF_VAR_vault_aws_secret_backend_path"
+  value           = vault_aws_secret_backend.aws_secret_backend.path
+  category        = "env"
+  description     = "Path to where the AWS Secrets Engine is mounted in Vault."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
 # resource "tfe_variable" "tfc_vault_token" {
 #   key             = "VAULT_TOKEN"
 #   value           = var.vault_token

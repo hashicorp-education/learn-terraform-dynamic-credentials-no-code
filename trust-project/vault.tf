@@ -45,7 +45,7 @@ path "auth/token/revoke-self" {
 }
 
 # Allow Access to AWS Secrets Engine
-path "aws/sts/${vault_aws_secret_backend_role.aws_secret_backend_role.name}" {
+path "aws/sts/*" {
   capabilities = [ "read" ]
 }
 

@@ -17,3 +17,7 @@ output "vault_password" {
   value     = random_password.vault.result
   sensitive = true
 }
+
+output "trust_relationships_arn" {
+  value = aws_iam_role.trust_relationships.arn
+}
