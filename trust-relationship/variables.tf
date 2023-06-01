@@ -108,8 +108,3 @@ variable "tfc_aws_auth_type" {
   type        = string
   description = "Auth type"
 }
-
-variable "aws_secrets_engine_backend_role_name" {
-  type        = string
-  description = "Secrets engine role name"
-}
