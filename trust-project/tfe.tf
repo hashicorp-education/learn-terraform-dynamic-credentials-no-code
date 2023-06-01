@@ -167,22 +167,6 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_password" {
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
 
-resource "tfe_variable" "vault_aws_secrets_engine_backend_role_name" {
-  key             = "TF_VAR_aws_secrets_engine_backend_role_name"
-  value           = vault_aws_secret_backend_role.aws_secret_backend_role.name
-  category        = "env"
-  description     = "Name of AWS secret backend role."
-  variable_set_id = tfe_variable_set.vault_credentials.id
-}
-
-resource "tfe_variable" "tfc_aws_auth_type" {
-  key             = "TF_VAR_tfc_aws_auth_type"
-  value           = vault_aws_secret_backend_role.aws_secret_backend_role.credential_type
-  category        = "env"
-  description     = "Name of AWS secret backend role."
-  variable_set_id = tfe_variable_set.vault_credentials.id
-}
-
 resource "tfe_variable" "aws_access_key_id" {
   key             = "AWS_ACCESS_KEY_ID"
   value           = aws_iam_access_key.trust_relationships.id

@@ -10,14 +10,6 @@ resource "vault_aws_secret_backend" "aws_secret_backend" {
   secret_key = aws_iam_access_key.trust_relationships.secret
 }
 
-resource "vault_aws_secret_backend_role" "aws_secret_backend_role" {
-  backend         = vault_aws_secret_backend.aws_secret_backend.path
-  name            = var.vault_aws_secret_backend_role_name
-  credential_type = "assumed_role"
-
-  role_arns = [aws_iam_role.trust_relationships.arn]
-}
-
 resource "vault_jwt_auth_backend" "tfc_jwt" {
   path               = var.jwt_backend_path
   type               = "jwt"
@@ -47,6 +39,10 @@ path "auth/token/revoke-self" {
 # Allow Access to AWS Secrets Engine
 path "aws/sts/*" {
   capabilities = [ "read" ]
+}
+
+path "aws/roles/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
 }
 
 path "auth/*" {

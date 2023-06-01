@@ -87,7 +87,7 @@ resource "tfe_variable" "tfc_aws_auth_type" {
   workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_BACKED_AWS_AUTH_TYPE"
-  value    = var.tfc_aws_auth_type
+  value    = vault_aws_secret_backend_role.aws_secret_backend_role.credential_type
   category = "env"
 
   description = "Role to assume via the AWS Secrets Engine in Vault."

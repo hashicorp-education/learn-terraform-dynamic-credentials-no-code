@@ -11,7 +11,7 @@ provider "vault" {
 
 resource "vault_aws_secret_backend_role" "aws_secret_backend_role" {
   backend         = var.vault_aws_secret_backend_path
-  name            = var.aws_secrets_engine_backend_role_name
+  name            = "secret-engine-role" # FIXME - must be unique
   credential_type = "assumed_role"
 
   role_arns = [aws_iam_role.tfc_role.arn]
