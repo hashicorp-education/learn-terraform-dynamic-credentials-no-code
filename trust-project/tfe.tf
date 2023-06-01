@@ -154,7 +154,7 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_password" {
   key      = "TERRAFORM_VAULT_PASSWORD"
   value    = random_password.vault.result
   category = "env"
-  #  sensitive = true
+  sensitive = true
   description     = "Password of the vault secrets engine user."
   variable_set_id = tfe_variable_set.vault_credentials.id
 }
@@ -162,6 +162,14 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_password" {
 resource "tfe_variable" "vault_aws_secrets_engine_backend_role_name" {
   key             = "TF_VAR_aws_secrets_engine_backend_role_name"
   value           = vault_aws_secret_backend_role.aws_secret_backend_role.name
+  category        = "env"
+  description     = "Name of AWS secret backend role."
+  variable_set_id = tfe_variable_set.vault_credentials.id
+}
+
+resource "tfe_variable" "tfc_aws_auth_type" {
+  key             = "TF_VAR_tfc_aws_auth_type"
+  value           = vault_aws_secret_backend_role.aws_secret_backend_role.credential_type
   category        = "env"
   description     = "Name of AWS secret backend role."
   variable_set_id = tfe_variable_set.vault_credentials.id

@@ -47,7 +47,7 @@ resource "tfe_variable" "tfc_vault_role" {
   workspace_id = tfe_workspace.trusted_workspace.id
 
   key      = "TFC_VAULT_RUN_ROLE"
-  value    = vault_jwt_auth_backend_role.tfc_role.role_name
+  value    = vault_jwt_auth_backend_role.aws_secret_backend_role.role_name
   category = "env"
 
   description = "The Vault role runs will use to authenticate."

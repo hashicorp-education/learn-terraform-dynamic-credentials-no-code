@@ -9,7 +9,7 @@ provider "vault" {
   }
 }
 
-resource "vault_jwt_auth_backend_role" "tfc_role" {
+resource "vault_jwt_auth_backend_role" "aws_secret_backend_role" {
   backend        = var.jwt_backend_path
   role_name      = "tfc-role"
   token_policies = [var.vault_policy_name]
