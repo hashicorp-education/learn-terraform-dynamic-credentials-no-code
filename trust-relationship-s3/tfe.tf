@@ -16,6 +16,11 @@ resource "tfe_variable_set" "s3_trust_relationship" {
   organization = var.tfc_organization_name
 }
 
+resource "tfe_project_variable_set" "s3_trust_relationship" {
+  variable_set_id = tfe_variable_set.s3_trust_relationship.id
+  project_id      = tfe_project.s3_websites.id
+}
+
 resource "tfe_variable" "enable_vault_provider_auth" {
   variable_set_id = tfe_variable_set.s3_trust_relationship.id
 
