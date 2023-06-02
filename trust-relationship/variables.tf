@@ -73,7 +73,6 @@ variable "aws_iam_user_name" {
 variable "aws_iam_user_arn" {
   type = string
   description = "AWS IAM user ARN"
-  default = "trust_relationships"
 }
 
 variable "aws_region" {
