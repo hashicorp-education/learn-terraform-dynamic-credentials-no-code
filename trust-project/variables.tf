@@ -71,3 +71,9 @@ variable "tfc_variable_set_name" {
   default     = "Variables for trust relationships."
   description = "TFC Variable Set Name"
 }
+
+variable "project_prefix" {
+  type = string
+  default = "DEMO"
+  description = "Prefix for the project and trust relationship."
+}

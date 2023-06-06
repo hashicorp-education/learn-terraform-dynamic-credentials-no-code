@@ -102,3 +102,9 @@ variable "vcs_working_directory" {
   type        = string
   description = "Working directory inside VCS repository"
 }
+
+variable "tfc_variable_set_name" {
+  type        = string
+  default     = "S3 Buckets trust relationship"
+  description = "TFC Variable Set Name"
+}
