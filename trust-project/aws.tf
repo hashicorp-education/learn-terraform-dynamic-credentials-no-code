@@ -11,7 +11,7 @@ resource "random_string" "name_suffix" {
 }
 
 resource "aws_iam_user" "trust_relationships" {
-  name = "vault-secrets-engine-${random_string.name_suffix}"
+  name = "vault-secrets-engine-${random_string.name_suffix.result}"
 }
 
 resource "aws_iam_access_key" "trust_relationships" {

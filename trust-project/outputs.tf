@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 output "tfc_project_name" {
   description = "Name of the trust relationships project"
   value       = tfe_project.trust_relationships.name

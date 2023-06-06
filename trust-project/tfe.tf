@@ -6,12 +6,12 @@ provider "tfe" {
 }
 
 resource "tfe_project" "trust_relationships" {
-  name         = "${var.tfc_trust_project_name} ${random_string.name_suffix}"
+  name         = "${var.tfc_trust_project_name} ${random_string.name_suffix.result}"
   organization = var.tfc_organization_name
 }
 
 resource "tfe_team" "trust_relationships" {
-  name         = "${var.tfc_trust_team_name} ${random_string.name_suffix}"
+  name         = "${var.tfc_trust_team_name} ${random_string.name_suffix.result}"
   organization = var.tfc_organization_name
 
   organization_access {
@@ -27,7 +27,7 @@ resource "tfe_team_token" "trust_relationships" {
 }
 
 resource "tfe_variable_set" "trust_relationships" {
-  name         = "${var.tfc_variable_set_name} ${random_string.name_suffix}"
+  name         = "${var.tfc_variable_set_name} ${random_string.name_suffix.result}"
   description  = "Variables required to create trust relationships."
   organization = var.tfc_organization_name
 }
