@@ -11,16 +11,6 @@ output "tfc_org_name" {
   value       = var.tfc_organization_name
 }
 
-output "vault_username" {
-  value     = var.vault_user_name
-  sensitive = true
-}
-
-output "vault_password" {
-  value     = random_password.vault.result
-  sensitive = true
-}
-
 output "trust_relationships_arn" {
   value = aws_iam_role.trust_relationships.arn
 }
