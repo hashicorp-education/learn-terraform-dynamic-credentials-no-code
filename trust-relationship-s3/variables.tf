@@ -30,7 +30,7 @@ variable "jwt_backend_path" {
   description = "The path at which you'd like to mount the jwt auth backend in Vault"
 }
 
-variable "vault_aws_secret_backend_path" {
+variable "vault_aws_secrets_backend_path" {
   type        = string
   description = "The path at which the AWS secret engine is mounted in Vault"
 }
