@@ -11,7 +11,7 @@ resource "tfe_project" "s3_websites" {
 }
 
 resource "tfe_variable_set" "s3_trust_relationship" {
-  name         = "S3 Buckets trust relationship"
+  name         = "${var.tfc_project_name} ${var.tfc_variable_set_name}"
   description  = "Trust relationships for S3 buckets project."
   organization = var.tfc_organization_name
 }

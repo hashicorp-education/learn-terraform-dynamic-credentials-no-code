@@ -1,2 +1,3 @@
 tfc_organization_name = "<YOUR_TFC_ORG>"
 vault_url             = "<VAULT_URL>"
+project_prefix        = "<PROJECT_PREFIX>"
