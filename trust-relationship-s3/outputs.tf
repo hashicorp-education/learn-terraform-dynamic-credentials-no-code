@@ -10,5 +10,5 @@ output "role_arn" {
 
 output "policy" {
   description = "Policy for this trust relationship"
-  value = aws_iam_policy.tfc_policy.policy
+  value       = aws_iam_policy.tfc_policy.policy
 }

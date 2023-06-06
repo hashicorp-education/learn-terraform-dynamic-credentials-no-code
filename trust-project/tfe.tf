@@ -6,12 +6,12 @@ provider "tfe" {
 }
 
 resource "tfe_project" "trust_relationships" {
-  name         = var.tfc_trust_project_name
+  name         = "${var.tfc_trust_project_name} ${random_string.name_suffix}"
   organization = var.tfc_organization_name
 }
 
 resource "tfe_team" "trust_relationships" {
-  name         = var.tfc_trust_team_name
+  name         = "${var.tfc_trust_team_name} ${random_string.name_suffix}"
   organization = var.tfc_organization_name
 
   organization_access {
@@ -26,14 +26,14 @@ resource "tfe_team_token" "trust_relationships" {
   team_id = tfe_team.trust_relationships.id
 }
 
-resource "tfe_variable_set" "tfe_credentials" {
-  name         = var.tfc_variable_set_name
-  description  = "TFE token and organization name for trust relationships."
+resource "tfe_variable_set" "trust_relationships" {
+  name         = "${var.tfc_variable_set_name} ${random_string.name_suffix}"
+  description  = "Variables required to create trust relationships."
   organization = var.tfc_organization_name
 }
 
-resource "tfe_project_variable_set" "tfe_credentials" {
-  variable_set_id = tfe_variable_set.tfe_credentials.id
+resource "tfe_project_variable_set" "trust_relationships" {
+  variable_set_id = tfe_variable_set.trust_relationships.id
   project_id      = tfe_project.trust_relationships.id
 }
 
@@ -42,7 +42,7 @@ resource "tfe_variable" "organization_name" {
   value           = var.tfc_organization_name
   category        = "terraform"
   description     = "organization name"
-  variable_set_id = tfe_variable_set.tfe_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "tfe_token" {
@@ -51,18 +51,7 @@ resource "tfe_variable" "tfe_token" {
   category        = "env"
   sensitive       = true
   description     = "Team token"
-  variable_set_id = tfe_variable_set.tfe_credentials.id
-}
-
-resource "tfe_variable_set" "vault_credentials" {
-  name         = var.tfc_variable_set_vault_credentials
-  description  = "Vault Credentials for trust relationships project."
-  organization = var.tfc_organization_name
-}
-
-resource "tfe_project_variable_set" "vault_credentials" {
-  variable_set_id = tfe_variable_set.vault_credentials.id
-  project_id      = tfe_project.trust_relationships.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "tfc_vault_addr" {
@@ -71,15 +60,15 @@ resource "tfe_variable" "tfc_vault_addr" {
   category        = "env"
   sensitive       = true
   description     = "The address of the Vault instance runs will access."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "tfc_vault_policy_name" {
   key             = "TF_VAR_vault_policy_name"
-  value           = vault_policy.tfc_policy.name
+  value           = vault_policy.trust_policy.name
   category        = "env"
   description     = "The name of the vault policy."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "tfc_vault_url" {
@@ -88,7 +77,7 @@ resource "tfe_variable" "tfc_vault_url" {
   category        = "env"
   sensitive       = true
   description     = "The address of the Vault instance runs will access."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "aws_iam_user_name" {
@@ -96,7 +85,7 @@ resource "tfe_variable" "aws_iam_user_name" {
   value           = aws_iam_user.trust_relationships.name
   category        = "env"
   description     = "The name of the AWS IAM user."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "aws_iam_user_arn" {
@@ -104,40 +93,31 @@ resource "tfe_variable" "aws_iam_user_arn" {
   value           = aws_iam_user.trust_relationships.arn
   category        = "env"
   description     = "The address of the Vault instance runs will access."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "tfc_aws_mount_path" {
   key             = "TFC_VAULT_BACKED_AWS_MOUNT_PATH"
   value           = vault_aws_secret_backend.aws_secret_backend.path
   category        = "env"
-  description     = "Path to where the AWS Secrets Engine is mounted in Vault."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  description     = "Path to where the AWS Secrets Engine backend is mounted in Vault."
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "tfc_aws_mount_path_tf" {
-  key             = "TF_VAR_vault_aws_secret_backend_path"
+  key             = "TF_VAR_vault_aws_secrets_backend_path"
   value           = vault_aws_secret_backend.aws_secret_backend.path
   category        = "env"
-  description     = "Path to where the AWS Secrets Engine is mounted in Vault."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  description     = "Path to where the AWS Secrets Engine backend is mounted in Vault."
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
-
-# resource "tfe_variable" "tfc_vault_token" {
-#   key             = "VAULT_TOKEN"
-#   value           = var.vault_token
-#   category        = "env"
-#   sensitive       = true
-#   description     = "Vault token."
-#   variable_set_id = tfe_variable_set.vault_credentials.id
-# }
 
 resource "tfe_variable" "tfc_vault_namespace" {
   key             = "VAULT_NAMESPACE"
   value           = "admin"
   category        = "env"
   description     = "Vault namespace."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "vault_aws_secrets_engine_user_name_env" {
@@ -146,7 +126,7 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_name_env" {
   category        = "env"
   sensitive       = true
   description     = "Username of the vault secrets engine user."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "vault_aws_secrets_engine_user_name_terraform" {
@@ -155,16 +135,16 @@ resource "tfe_variable" "vault_aws_secrets_engine_user_name_terraform" {
   category        = "env"
   sensitive       = true
   description     = "Username of the vault secrets engine user."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "vault_aws_secrets_engine_user_password" {
-  key      = "TERRAFORM_VAULT_PASSWORD"
-  value    = random_password.vault.result
-  category = "env"
-  sensitive = true
+  key             = "TERRAFORM_VAULT_PASSWORD"
+  value           = random_password.vault.result
+  category        = "env"
+  sensitive       = true
   description     = "Password of the vault secrets engine user."
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "aws_access_key_id" {
@@ -173,7 +153,7 @@ resource "tfe_variable" "aws_access_key_id" {
   category        = "env"
   sensitive       = true
   description     = "Secret key ID associated with the role used to create trust relationships"
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }
 
 resource "tfe_variable" "aws_secret_access_key" {
@@ -182,5 +162,5 @@ resource "tfe_variable" "aws_secret_access_key" {
   category        = "env"
   sensitive       = true
   description     = "Secret key associated with the role used to create trust relationships"
-  variable_set_id = tfe_variable_set.vault_credentials.id
+  variable_set_id = tfe_variable_set.trust_relationships.id
 }

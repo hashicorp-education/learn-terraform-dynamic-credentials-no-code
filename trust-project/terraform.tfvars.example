@@ -1,2 +1,2 @@
-tfc_organization_name = "<YOUR_ORG>"
-vault_url             = "<YOUR_VAULT_URL>"
+tfc_organization_name = "<YOUR_TFC_ORG>"
+vault_url             = "<VAULT_URL>"

@@ -6,18 +6,18 @@ provider "tfe" {
 }
 
 data "tfe_oauth_client" "client" {
-  organization = var.tfc_organization_name
-  name = var.vcs_oath_client_name
+  organization     = var.tfc_organization_name
+  name             = var.vcs_oath_client_name
   service_provider = var.vcs_service_provider
 }
 
 resource "tfe_workspace" "trusted_workspace" {
-  name         = var.tfc_workspace_name
-  organization = var.tfc_organization_name
+  name              = var.tfc_workspace_name
+  organization      = var.tfc_organization_name
   working_directory = var.vcs_working_directory
 
   vcs_repo {
-    identifier = var.vcs_identifier
+    identifier     = var.vcs_identifier
     oauth_token_id = data.tfe_oauth_client.client.oauth_token_id
   }
 }
@@ -90,7 +90,7 @@ resource "tfe_variable" "tfc_aws_auth_type" {
   value    = vault_aws_secret_backend_role.aws_secret_backend_role.credential_type
   category = "env"
 
-  description = "Role to assume via the AWS Secrets Engine in Vault."
+  description = "Authentication type of Vault AWS secrets backend."
 }
 
 resource "tfe_variable" "tfc_aws_run_role_arn" {
@@ -100,7 +100,7 @@ resource "tfe_variable" "tfc_aws_run_role_arn" {
   value    = aws_iam_role.tfc_role.arn
   category = "env"
 
-  description = "ARN of the AWS IAM Role the run will assume."
+  description = "ARN of the AWS IAM Role the dynamic credentials will assume."
 }
 
 resource "tfe_variable" "tfc_aws_run_vault_role" {
@@ -110,5 +110,5 @@ resource "tfe_variable" "tfc_aws_run_vault_role" {
   value    = vault_aws_secret_backend_role.aws_secret_backend_role.name
   category = "env"
 
-  description = "Name of the Role in Vault to assume via the AWS Secrets Engine."
+  description = "Name of the Vault role to assume for the AWS Secrets Engine."
 }

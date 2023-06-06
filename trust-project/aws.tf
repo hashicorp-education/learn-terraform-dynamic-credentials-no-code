@@ -1,9 +1,17 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 provider "aws" {
   region = var.aws_region
 }
 
+resource "random_string" "name_suffix" {
+  length  = 6
+  special = false
+}
+
 resource "aws_iam_user" "trust_relationships" {
-  name = "vault-secrets-engine"
+  name = "vault-secrets-engine-${random_string.name_suffix}"
 }
 
 resource "aws_iam_access_key" "trust_relationships" {

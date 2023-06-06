@@ -1,10 +1,13 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 provider "vault" {
   address = var.vault_url
 }
 
 resource "vault_aws_secret_backend" "aws_secret_backend" {
   namespace = var.vault_namespace
-  path      = "aws"
+  path      = var.aws_secrets_backend_path
 
   access_key = aws_iam_access_key.trust_relationships.id
   secret_key = aws_iam_access_key.trust_relationships.secret
@@ -17,7 +20,7 @@ resource "vault_jwt_auth_backend" "tfc_jwt" {
   bound_issuer       = "https://${var.tfc_hostname}"
 }
 
-resource "vault_policy" "tfc_policy" {
+resource "vault_policy" "trust_policy" {
   name = var.vault_aws_secret_backend_policy_name
 
   policy = <<EOT
@@ -66,7 +69,7 @@ resource "vault_generic_endpoint" "trust_relationships" {
 
   data_json = <<EOT
 {
-  "policies": ["${vault_policy.tfc_policy.name}"],
+  "policies": ["${vault_policy.trust_policy.name}"],
   "password": "${random_password.vault.result}"
 }
 EOT
