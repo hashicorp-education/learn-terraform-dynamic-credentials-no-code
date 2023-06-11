@@ -19,7 +19,7 @@ resource "vault_aws_secret_backend_role" "aws_secret_backend_role" {
 
 resource "vault_jwt_auth_backend_role" "aws_secret_backend_role" {
   backend        = var.jwt_backend_path
-  role_name      = "tfc-role"
+  role_name      = "tfc-role-ec2"
   token_policies = [var.vault_policy_name]
 
   bound_audiences   = [var.tfc_vault_audience]
