@@ -82,27 +82,6 @@ variable "aws_region" {
   description = "AWS region for all resources"
 }
 
-variable "vcs_oath_client_name" {
-  type        = string
-  description = "The name of the OAuth client"
-}
-
-variable "vcs_service_provider" {
-  type        = string
-  default     = "github"
-  description = "The name of the VCS service provider"
-}
-
-variable "vcs_identifier" {
-  type        = string
-  description = "Identifier for VCS repository"
-}
-
-variable "vcs_working_directory" {
-  type        = string
-  description = "Working directory inside VCS repository"
-}
-
 variable "tfc_variable_set_name" {
   type        = string
   default     = "S3 Buckets trust relationship"
