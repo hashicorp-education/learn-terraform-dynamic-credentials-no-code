@@ -14,6 +14,8 @@ data "tfe_oauth_client" "client" {
 resource "tfe_workspace" "trusted_workspace" {
   name              = var.tfc_workspace_name
   organization      = var.tfc_organization_name
+  queue_all_runs    = false
+
   working_directory = var.vcs_working_directory
 
   vcs_repo {
