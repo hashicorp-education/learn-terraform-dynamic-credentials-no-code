@@ -1,11 +1,14 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 variable "instance_type" {
-  description = "Type of EC2 instance to use"
+  description = "Type of EC2 instance to use."
   default     = "t2.micro"
   type        = string
 }
 
 variable "tags" {
-  description = "Tags for instances"
+  description = "Tags for instances."
   type        = map
   default     = {}
 }
@@ -13,5 +16,5 @@ variable "tags" {
 variable "aws_region" {
   type        = string
   default     = "us-east-2"
-  description = "AWS region for all resources"
+  description = "AWS region for all resources."
 }
